@@ -96,7 +96,10 @@ python3 << EOF
 def fetch_rfc(url):
   import urllib.request
   try:
-    rfc = urllib.request.urlopen(url).read().decode('utf-8').splitlines()
+    headers = {
+        'User-Agent': 'curl/7.68.0'
+    }
+    rfc = urllib.request.urlopen(urllib.request.Request(url, headers=headers)).read().decode('utf-8').splitlines()
   except urllib.request.URLError as e:
     print(f'{e}\nFetching RFC failed. Connected to the internet? Behind proxy?')
     return False
@@ -111,7 +114,10 @@ def create_cache_file():
   import xml.etree.ElementTree as ET
 
   try:
-    xml = urllib.request.urlopen('https://www.rfc-editor.org/in-notes/rfc-index.xml').read()
+    headers = {
+        'User-Agent': 'curl/7.68.0'
+    }
+    xml = urllib.request.urlopen(urllib.request.Request('https://www.rfc-editor.org/in-notes/rfc-index.xml', headers=headers)).read()
   except urllib.error.URLError as e:
     print(f'{e}\nFetching RFC index failed. Connected to the internet? Behind proxy?')
     return False
